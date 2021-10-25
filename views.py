@@ -2,17 +2,16 @@ from flask import Flask, render_template, url_for, request, redirect, flash
 from models import Product
 from forms import ProductForm, ProductSaleForm
 import csv
-from csv import DictReader
-from csv import DictWriter
+
 
 app=Flask(__name__)
 app.config["SECRET_KEY"] = "usdhcgducguqdbquj"
 
 
-ITEMS = {"Tofu" : Product("Tofu", "kg", "%.2f" % 2.60, 130),
-         "Hummus" : Product("Hummus", "kg", "%.2f" % 3.56, 145),
-         "Soya" : Product("Soya", "kg", "%.2f" %4.2, 120),
-         "Melon" : Product("Melon", "kg", "%.2f" % 3.55, 250)}
+ITEMS = {"Tofu" : Product("Tofu", "kg", "%.2f" % 2.3, "%.2f" % 2.60, 130),
+         "Hummus" : Product("Hummus", "kg", "%.2f" % 3.11,"%.2f" % 3.56, 145),
+         "Soya" : Product("Soya", "kg", "%.2f" % 3.9, "%.2f" %4.2, 120),
+         "Melon" : Product("Melon", "kg", "%.2f" % 3.21, "%.2f" % 3.55, 250)}
 
 
 @app.route('/')
@@ -26,7 +25,7 @@ def product_list():
     if request.method=="POST":
         if form.validate_on_submit():
             # jeśli klucz istnieje ilość i cena się nadpiszą
-            ITEMS[form.data['name']] = Product(form.data['name'], form.data['unit'], form.data['unit_price'], form.data['quantity'])
+            ITEMS[form.data['name']] = Product(form.data['name'], form.data['unit'], form.data['unit_cost'], form.data['unit_price'], form.data['quantity'])
         else:
             error=form.errors
         return redirect(url_for("product_list"))    
