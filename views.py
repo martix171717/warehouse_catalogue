@@ -52,11 +52,11 @@ def export_items_to_csv():
     error = ""
     if request.method == "POST":
         with open('C:\Python\Projekty\warehouse_project\warehouse_catalogue\magazyn.csv', 'w', newline='') as csvfile:
-            fieldnames = ["name", "quantity", "unit", "unit_price"]
+            fieldnames = ["name", "quantity", "unit", "unit_cost","unit_price"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             for item in ITEMS.values():
-                record = {"name" : item.name, "quantity" : item.quantity, "unit": item.unit, "unit_price" : item.unit_price}
+                record = {"name" : item.name, "quantity" : item.quantity, "unit": item.unit, "unit_cost" : item.unit_cost, "unit_price" : item.unit_price}
                 writer.writerow(record)
         return render_template("product_list.html", form=form, fieldnames=fieldnames, csvfile=csvfile, items=ITEMS, error=error)
 
@@ -68,12 +68,12 @@ def import_items_from_csv():
     error = ""
     if request.method == "GET":
         with open('C:\Python\Projekty\warehouse_project\warehouse_catalogue\magazyn.csv', newline='') as csvfile:
-            fieldnames = ["name", "quantity", "unit", "unit_price"]
+            fieldnames = ["name", "quantity", "unit", "unit_cost", "unit_price"]
             reader = csv.DictReader(csvfile, fieldnames=fieldnames, delimiter=',')
             ITEMS.clear()
             for row in reader:
                 if row["name"] != "name":
-                    ITEMS[row["name"]] = Product(row["name"], row["unit"], row["unit_price"], row["quantity"])
+                    ITEMS[row["name"]] = Product(row["name"], row["unit"], row["unit_cost"], row["unit_price"], row["quantity"])
         return render_template("product_list.html", form=form, items=ITEMS, error=error)   
 
 if __name__ == "__main__":
