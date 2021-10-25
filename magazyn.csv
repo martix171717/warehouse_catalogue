@@ -1,6 +1,6 @@
-name,quantity,unit,unit_price
-Tofu,90,kg,6.50
-Hummus,145,kg,3.56
-Soya,444,kg,6.50
-Melon,250,kg,3.55
-Pineapple,23,kg,6.50
+name,quantity,unit,unit_cost,unit_price
+Tofu,130,kg,2.30,2.60
+Hummus,145,kg,3.11,3.56
+Soya,120,kg,3.90,4.20
+Melon,250,kg,3.21,3.55
+Pineapple,23,kg,5.55,6.50
