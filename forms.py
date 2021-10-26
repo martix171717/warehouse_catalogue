@@ -10,4 +10,4 @@ class ProductForm(FlaskForm):
     quantity = IntegerField('Quantity', validators=[DataRequired()])
     
 class ProductSaleForm(FlaskForm):
-    quantity = IntegerField('Quantity', validators=[DataRequired()])
+    quantity_sold = IntegerField('Quantity Sold', validators=[DataRequired()])

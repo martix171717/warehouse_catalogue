@@ -13,6 +13,7 @@ ITEMS = {"Tofu" : Product("Tofu", "kg", "%.2f" % 2.3, "%.2f" % 2.60, 130),
          "Soya" : Product("Soya", "kg", "%.2f" % 3.9, "%.2f" %4.2, 120),
          "Melon" : Product("Melon", "kg", "%.2f" % 3.21, "%.2f" % 3.55, 250)}
 
+SOLD_ITEMS={}
 
 @app.route('/')
 def homepage():
@@ -36,14 +37,15 @@ def sell_product(product_name):
     form = ProductSaleForm()
     error=""
     if request.method =="POST":
-        ITEMS[product_name].quantity = int(ITEMS[product_name].quantity) - int(form.data['quantity'])
+        ITEMS[product_name].quantity = int(ITEMS[product_name].quantity) - int(form.data['quantity_sold'])
+        SOLD_ITEMS.update({"Name": ITEMS[product_name].name, "Unit": ITEMS[product_name].unit, "Unit cost":ITEMS[product_name].unit_cost, "Unit price" :ITEMS[product_name].unit_price, "Quantity sold":form.data['quantity_sold']})
         if ITEMS[product_name].quantity <0:
             flash(f"There are not enough goods to sell. Please enter a lower quantity")
-            ITEMS[product_name].quantity = int(ITEMS[product_name].quantity + form.data['quantity'])
+            ITEMS[product_name].quantity = int(ITEMS[product_name].quantity + form.data['quantity_sold'])
         else:
             pass
         return redirect(url_for("product_list"))
-    return render_template("sell_product.html", form=form, error=error, product_name=product_name, items=ITEMS) 
+    return render_template("sell_product.html", form=form, error=error, product_name=product_name, items=ITEMS, sold_items=SOLD_ITEMS) 
 
 # Export do pliku csv
 @app.route('/product_list/', methods=["POST"])
@@ -75,6 +77,11 @@ def import_items_from_csv():
                 if row["name"] != "name":
                     ITEMS[row["name"]] = Product(row["name"], row["unit"], row["unit_cost"], row["unit_price"], row["quantity"])
         return render_template("product_list.html", form=form, items=ITEMS, error=error)   
+
+
+@app.route('/sold_products')
+def sold_products():
+    return render_template("sold_products.html", sold_items=SOLD_ITEMS, items=ITEMS)
 
 if __name__ == "__main__":
     app.run(debug=True)
