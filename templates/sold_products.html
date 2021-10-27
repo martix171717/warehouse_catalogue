@@ -16,15 +16,17 @@
             </tr>
         </thead>
         <tbody>
+          {% for i in range (sold_items|length) %}
             <tr>
           <th scope="row"></th> 
-                <td>{{ sold_items['Name']}}</td>
-                <td >{{ sold_items["Quantity sold"]}}</td>
-                <td >{{ sold_items['Unit']}}</td>
-                <td >{{ sold_items['Unit cost'] }}</td>
-                <td >{{ sold_items['Unit price'] }}</td>
+                <td>{{ sold_items[i]['Name'] }}</td>
+                <td >{{ sold_items[i]['Quantity sold']}}</td>
+                <td >{{ sold_items[i]['Unit']}}</td>
+                <td >{{ sold_items[i]['Unit cost'] }}</td>
+                <td >{{ sold_items[i]['Unit price'] }}</td>
                 <td ></td>
             </tr>
+           {%endfor%}
         </tbody>
     </table>
 </div>
