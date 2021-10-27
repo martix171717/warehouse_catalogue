@@ -13,7 +13,7 @@ ITEMS = {"Tofu" : Product("Tofu", "kg", "%.2f" % 2.3, "%.2f" % 2.60, 130),
          "Soya" : Product("Soya", "kg", "%.2f" % 3.9, "%.2f" %4.2, 120),
          "Melon" : Product("Melon", "kg", "%.2f" % 3.21, "%.2f" % 3.55, 250)}
 
-SOLD_ITEMS={}
+SOLD_ITEMS=[]
 
 @app.route('/')
 def homepage():
@@ -38,7 +38,8 @@ def sell_product(product_name):
     error=""
     if request.method =="POST":
         ITEMS[product_name].quantity = int(ITEMS[product_name].quantity) - int(form.data['quantity_sold'])
-        SOLD_ITEMS.update({"Name": ITEMS[product_name].name, "Unit": ITEMS[product_name].unit, "Unit cost":ITEMS[product_name].unit_cost, "Unit price" :ITEMS[product_name].unit_price, "Quantity sold":form.data['quantity_sold']})
+        d={"Name": ITEMS[product_name].name, "Unit": ITEMS[product_name].unit, "Unit cost":ITEMS[product_name].unit_cost, "Unit price" :ITEMS[product_name].unit_price, "Quantity sold":form.data['quantity_sold']}
+        SOLD_ITEMS.append(d)
         if ITEMS[product_name].quantity <0:
             flash(f"Oops! There are not enough goods to sell. Please enter a lower quantity.")
             ITEMS[product_name].quantity = int(ITEMS[product_name].quantity + form.data['quantity_sold'])
