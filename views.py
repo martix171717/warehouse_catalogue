@@ -40,7 +40,7 @@ def sell_product(product_name):
         ITEMS[product_name].quantity = int(ITEMS[product_name].quantity) - int(form.data['quantity_sold'])
         SOLD_ITEMS.update({"Name": ITEMS[product_name].name, "Unit": ITEMS[product_name].unit, "Unit cost":ITEMS[product_name].unit_cost, "Unit price" :ITEMS[product_name].unit_price, "Quantity sold":form.data['quantity_sold']})
         if ITEMS[product_name].quantity <0:
-            flash(f"There are not enough goods to sell. Please enter a lower quantity")
+            flash(f"Oops! There are not enough goods to sell. Please enter a lower quantity.")
             ITEMS[product_name].quantity = int(ITEMS[product_name].quantity + form.data['quantity_sold'])
         else:
             pass
@@ -55,12 +55,12 @@ def export_items_to_csv():
     if request.method == "POST":
         with open('C:\Python\Projekty\warehouse_project\warehouse_catalogue\magazyn.csv', 'w', newline='') as csvfile:
             fieldnames = ["name", "quantity", "unit", "unit_cost","unit_price"]
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames, delimiter=',')
             writer.writeheader()
             for item in ITEMS.values():
                 record = {"name" : item.name, "quantity" : item.quantity, "unit": item.unit, "unit_cost" : item.unit_cost, "unit_price" : item.unit_price}
                 writer.writerow(record)
-        return render_template("product_list.html", form=form, fieldnames=fieldnames, csvfile=csvfile, items=ITEMS, error=error)
+    return render_template("product_list.html", form=form, fieldnames=fieldnames, csvfile=csvfile, items=ITEMS, error=error)
 
 
 # Import z pliku csv
